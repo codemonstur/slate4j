@@ -41,3 +41,8 @@ deploy: build
 	@hub release create -a target/$(NAME)-$(VERSION).jar -a target/$(NAME)-$(VERSION)-javadoc.jar -a target/$(NAME)-$(VERSION)-sources.jar -F src/docs/releases/release-$(VERSION).txt $(NAME)-$(VERSION)
 	@echo "[$(NAME)] Uploading to maven central"
 	@mvn clean deploy -P release
+
+slatedocs:
+	@mkdir -p target/docs
+	@echo "[$(NAME)] Creating documentation"
+	@docker run --rm -v $$PWD/src/test/resources/source:/slate/source -v $$PWD/target/docs:/slate/build ngtibackend/slate bundle exec middleman build --clean --verbose
