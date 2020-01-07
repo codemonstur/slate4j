@@ -5,6 +5,7 @@ import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -16,7 +17,6 @@ import org.jsoup.select.NodeVisitor;
 import slate4j.error.InvalidInput;
 import slate4j.model.SlateFile;
 import slate4j.model.SlateHeading;
-import slate4j.tools.LogSuppressingMojo;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import static slate4j.model.Resource.newResource;
 import static slate4j.tools.App.buildMavenTask;
 
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "compile" )
-public final class MavenDocs extends LogSuppressingMojo {
+public final class MavenDocs extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
