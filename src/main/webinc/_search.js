@@ -1,6 +1,3 @@
-//= require ../lib/_lunr
-//= require ../lib/_jquery
-//= require ../lib/_jquery.highlight
 ;(function () {
   'use strict';
 

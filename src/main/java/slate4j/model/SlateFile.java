@@ -1,7 +1,5 @@
 package slate4j.model;
 
-import slate4j.error.InvalidInput;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,16 +20,17 @@ public final class SlateFile {
     }
 
     private static final String slate_content_separator = "---";
-    public static SlateFile toSlateFile(final File file) throws IOException, InvalidInput {
+    public static SlateFile toSlateFile(final File file) throws IOException {
         try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            if (!slate_content_separator.equals(reader.readLine())) throw new InvalidInput("File does not have proper header");
+            if (!slate_content_separator.equals(reader.readLine()))
+                throw new IOException("File does not have proper header");
 
             final SlateHeader header = toSlateHeader(readUntil(reader, slate_content_separator));
             final StringBuilder content = new StringBuilder();
             content.append(readUntil(reader, null)).append("\n");
 
             for (final String include : header.includes) {
-                content.append(readIncludeFile(file, include));
+                content.append(readIncludeFile(file, include)).append("\n");
             }
 
             return new SlateFile(file, header, content.toString());

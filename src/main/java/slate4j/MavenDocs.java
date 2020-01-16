@@ -6,42 +6,56 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.DataNode;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.NodeVisitor;
-import slate4j.error.InvalidInput;
 import slate4j.model.SlateFile;
 import slate4j.model.SlateHeading;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOURCES;
-import static slate4j.model.Resource.newResource;
-import static slate4j.tools.App.buildMavenTask;
+import static slate4j.IO.*;
+import static slate4j.model.SlateFile.toSlateFile;
 
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "compile" )
 public final class MavenDocs extends AbstractMojo {
 
+    @Parameter(defaultValue = "src/main/docs/index.html.md")
+    public File indexFile;
+    @Parameter
+    public File logoFile;
+    @Parameter(defaultValue = "target/classes/docs/index.html")
+    public File outputFile;
+
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        buildMavenTask(this, log -> {
-            compileSlateDocument(new File("src/main/docs/index.html.md"));
-        });
+    public void execute() throws MojoFailureException {
+        try {
+            final String html = compileSlateDocument(indexFile, logoFile);
+            outputFile.getParentFile().mkdirs();
+            Files.writeString(outputFile.toPath(), html, CREATE, TRUNCATE_EXISTING);
+        } catch (Exception e) {
+            throw new MojoFailureException(e.getMessage(), e);
+        }
     }
 
-    public static String compileSlateDocument(final File file) throws IOException, InvalidInput {
+    public static String compileSlateDocument(final File indexFile, final File logoFile) throws IOException {
         final Gson gson = new Gson();
-        final SlateFile slateFile = SlateFile.toSlateFile(file);
+        final SlateFile slateFile = toSlateFile(indexFile);
 
-        final Document wrapper = Jsoup.parse(newResource("/static/wrapper.html").toString());
+        final Document wrapper = Jsoup.parse(resourceToString("/webbin/wrapper.html"));
         wrapper.selectFirst("title").text(slateFile.header.title);
         wrapper.selectFirst("body").attr("data-languages", gson.toJson(slateFile.header.languages));
         for (final var langSelector : wrapper.select("div.lang-selector")) {
@@ -54,6 +68,17 @@ public final class MavenDocs extends AbstractMojo {
             }
         }
 
+        final String js = resourceToString("/webbin/custom.min.js");
+        final String css = resourceToString("/webbin/custom.min.css");
+        wrapper.selectFirst("head")
+            .appendChild( wrapper.createElement("script").appendChild(new DataNode(js)) )
+            .appendChild( wrapper.createElement("style").appendChild(new DataNode(css)) );
+
+        final String logo = existsFile(logoFile)
+                ? encodeBase64(readAsBytes(logoFile))
+                : resourceToString("/static/img/logo.base64.txt");
+        wrapper.selectFirst("img[class=logo]").attr("src", "data:image/png;base64,"+logo);
+
         final Element body = Jsoup.parseBodyFragment(markdownToHtml(slateFile.content)).body();
         insertTableOfContents(wrapper, body);
 
@@ -62,7 +87,32 @@ public final class MavenDocs extends AbstractMojo {
             element.appendChild(child);
         }
 
+        for (final var codeTags : wrapper.select("code")) {
+            final String language = toLanguageClass(codeTags.attr("class"));
+            if (language == null) continue;
+
+            codeTags.parent().addClass("highlight").addClass(language).addClass("tab-"+language);
+        }
+
+        for (final var notice : wrapper.select("aside[class=notice]")) {
+            notice.prependChild( wrapper.createElement("li").addClass("fas").addClass("fa-info-circle") );
+        }
+        for (final var success : wrapper.select("aside[class=success]")) {
+            success.prependChild( wrapper.createElement("li").addClass("fas").addClass("fa-check-circle") );
+        }
+        for (final var warning : wrapper.select("aside[class=warning]")) {
+            warning.prependChild( wrapper.createElement("li").addClass("fas").addClass("fa-exclamation-circle") );
+        }
+
         return wrapper.html();
+    }
+
+    private static String toLanguageClass(final String classAttr) {
+        for (final String clas : classAttr.split(" ")) {
+            if (clas.startsWith("language-"))
+                return clas.substring(9);
+        }
+        return null;
     }
 
     private static void insertTableOfContents(final Document wrapper, final Element body) {
