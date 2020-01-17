@@ -33,6 +33,9 @@ import static slate4j.model.SlateFile.toSlateFile;
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "compile" )
 public final class MavenDocs extends AbstractMojo {
 
+    @Parameter(defaultValue = "true")
+    public boolean enabled;
+
     @Parameter(defaultValue = "src/main/docs/index.html.md")
     public File indexFile;
     @Parameter
@@ -42,6 +45,8 @@ public final class MavenDocs extends AbstractMojo {
 
     @Override
     public void execute() throws MojoFailureException {
+        if (!enabled) return;
+
         try {
             final String html = compileSlateDocument(indexFile, logoFile);
             outputFile.getParentFile().mkdirs();
