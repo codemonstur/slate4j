@@ -1,3 +1,4 @@
+vendor: com.github.codemonstur
 version: 0.2.0
 packaging: maven-plugin
 release: 11
