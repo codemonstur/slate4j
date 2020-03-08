@@ -1,5 +1,6 @@
 vendor: com.github.codemonstur
 version: 0.2.0
+enablePreview: false
 packaging: maven-plugin
 release: 11
 dependencies:
