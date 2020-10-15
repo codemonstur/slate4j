@@ -11,7 +11,7 @@ dependencies:
   - repository: org.apache.maven:maven-project:2.2.1
   - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.5
     scope: provided
-  - repository: junit:junit:4.12
+  - repository: junit:junit:4.13.1
     scope: test
 
 build
