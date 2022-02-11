@@ -1,7 +1,7 @@
 include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-app-github
 
 vendor: com.github.codemonstur
-version: 2
+version: 3
 enablePreview: false
 packaging: maven-plugin
 release: 11
