@@ -4,7 +4,6 @@ vendor: com.github.codemonstur
 version: 4
 enablePreview: false
 packaging: maven-plugin
-release: 11
 dependencies:
   - repository: com.vladsch.flexmark:flexmark-all:0.64.0
   - repository: org.jsoup:jsoup:1.15.3
