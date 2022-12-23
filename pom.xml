@@ -35,9 +35,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.release>19</maven.compiler.release>
     </properties>
 
     <distributionManagement>
@@ -67,7 +67,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.0.1</version>
                         <configuration>
                             <passphrase>${gpg.passphrase}</passphrase>
                         </configuration>
