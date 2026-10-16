@@ -38,3 +38,16 @@ Add this to the pom:
 Slate4j will read slate markdown from `src/main/docs/index.html.md`.
 And generate output in `target/classes/docs/index.html`.
 
+## How to use as a bob plugin
+
+The jar attached to each release doubles as a [bob](https://github.com/codemonstur/bobthebuildtool) plugin.
+Add this line to the top of your bobfile:
+
+```
+plugin codemonstur/slate4j:4
+```
+
+The `slate4j` command is then available in all your bob tasks.
+
+This replaces the old [slate4j-bobplugin](https://github.com/codemonstur/slate4j-bobplugin) plugin.
+

@@ -14,3 +14,25 @@ dependencies:
     scope: provided
   - repository: junit:junit:4.13.2
     scope: test
+
+build
+ |  mvn clean package -DskipTests
+
+-- Deploys to Github; the bobplugin jar is what the bob `plugin` directive downloads.
+-- The maven plugin artifact itself goes to MavenCentral through `mvn deploy`.
+deploy
+    EXISTS_RELEASE_NOTES = `ls src/docs/releases/release-${PROJECT_VERSION}.txt 2>/dev/null | wc -l`
+    if (${EXISTS_RELEASE_NOTES} != 1)
+        run-task release-notes
+        error Release notes need to be prepared first
+        fail
+    endif
+    info [${PROJECT_NAME}] Clean and build for deploy
+    run-task -i clean
+    run-task build
+    info [${PROJECT_NAME}] Tagging and pushing to github
+    git tag ${PROJECT_NAME}-${PROJECT_VERSION}
+    git push && git push --tags
+    info [${PROJECT_NAME}] Creating github release
+    hub release create -a target/${PROJECT_NAME}-${PROJECT_VERSION}-bobplugin.jar -F src/docs/releases/release-${PROJECT_VERSION}.txt ${PROJECT_NAME}-${PROJECT_VERSION}
+    version increment major

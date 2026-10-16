@@ -1,0 +1,5 @@
+4
+
+Merged the bob plugin into this project: the release now carries a jar that can be used
+with `plugin codemonstur/slate4j:4`, replacing slate4j-bobplugin
+The Github release jar is now built with maven, fixing missing compiled web assets
