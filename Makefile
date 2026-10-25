@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help clean build test validate release-notes deploy coverage
+.PHONY: help clean build test coverage validate release-notes deploy slatedocs
 
 NAME=`xmllint --xpath "//project/artifactId/text()" pom.xml`
 VERSION=`xmllint --xpath "//project/version/text()" pom.xml`
@@ -13,8 +13,8 @@ INFO = printf '[\033[1;34mINFO\033[m] %s\n'
 endif
 
 help: ## Show this help
-	@grep -hE '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
+	@grep -hE '^[a-zA-Z0-9_.-]+:' $(MAKEFILE_LIST) | grep -vE '^[a-zA-Z0-9_.-]+:=' | \
+		awk 'BEGIN {FS = ":"} /^\./ {next} {name = $$1; sub(/[[:blank:]]+$$/, "", name); doc = $$0; sub(/^[^#]*## /, "", doc); if (doc == $$0) sub(/^[^:]*:[[:blank:]]*/, "", doc); printf "  \033[36m%-10s\033[0m %s\n", name, doc}'
 
 clean: ## Delete everything in ./target
 	@$(INFO) "Cleaning"
@@ -34,13 +34,14 @@ coverage: ## Run tests and generate a jacoco coverage report
 	@output=$$(java src/build/CoverageSummary.java target/site/jacoco/jacoco.csv) || exit $$?; \
 	printf '%s\n' "$$output" | while IFS= read -r line; do $(INFO) "$$line"; done
 
-validate: ## Check dependency versions, cves, and licenses
+validate: ## Check dependency versions, cves, licenses, and code quality
 	@mvn versions:display-dependency-updates
 	@mvn versions:display-plugin-updates
 	@mvn validate -P vulnerabilities
 	@mvn validate -P licenses
+	@mvn validate -P codequality
 
-release-notes:
+release-notes: ## Write release notes in src/docs/releases for the current version
 	@mkdir -p src/docs/releases
 	@$(INFO) "Writing release notes to src/docs/releases/release-$(VERSION).txt"
 	@echo "$(VERSION)" >> src/docs/releases/release-$(VERSION).txt
@@ -56,7 +57,7 @@ deploy: ## Clean, build and deploy a version to Github and Maven Central
 	@git tag $(NAME)-$(VERSION)
 	@git push && git push --tags
 
-slatedocs:
+slatedocs: ## Build the Slate API documentation with Docker
 	@mkdir -p target/docs
 	@$(INFO) "Creating documentation"
 	@docker run --rm -v $$PWD/src/test/resources/source:/slate/source -v $$PWD/target/docs:/slate/build ngtibackend/slate bundle exec middleman build --clean --verbose

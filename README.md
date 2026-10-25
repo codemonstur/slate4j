@@ -25,7 +25,7 @@ Add this to the pom:
 <plugin>
   <groupId>com.github.codemonstur</groupId>
   <artifactId>slate4j</artifactId>
-  <version>0.1.0</version>
+  <version>4</version>
   <executions>
     <execution>
       <phase>generate-resources</phase>
