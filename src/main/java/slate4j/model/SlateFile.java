@@ -29,8 +29,10 @@ public final class SlateFile {
             final StringBuilder content = new StringBuilder();
             content.append(readUntil(reader, null)).append("\n");
 
-            for (final String include : header.includes) {
-                content.append(readIncludeFile(file, include)).append("\n");
+            if (header.includes != null) {
+                for (final String include : header.includes) {
+                    content.append(readIncludeFile(file, include)).append("\n");
+                }
             }
 
             return new SlateFile(file, header, content.toString());

@@ -62,9 +62,10 @@ public final class MavenDocs extends AbstractMojo {
 
         final Document wrapper = Jsoup.parse(resourceToString("/webbin/wrapper.html"));
         wrapper.selectFirst("title").text(slateFile.header.title);
-        wrapper.selectFirst("body").attr("data-languages", gson.toJson(slateFile.header.languages));
+        final var languages = slateFile.header.languages == null ? java.util.List.<String>of() : slateFile.header.languages;
+        wrapper.selectFirst("body").attr("data-languages", gson.toJson(languages));
         for (final var langSelector : wrapper.select("div.lang-selector")) {
-            for (final var lang : slateFile.header.languages) {
+            for (final var lang : languages) {
                 langSelector.appendChild(
                     wrapper.createElement("a")
                         .attr("href", "#")

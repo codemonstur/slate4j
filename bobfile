@@ -6,13 +6,13 @@ enablePreview: false
 packaging: maven-plugin
 dependencies:
   - repository: com.vladsch.flexmark:flexmark-all:0.64.8
-  - repository: org.jsoup:jsoup:1.16.1
-  - repository: com.google.code.gson:gson:2.10.1
-  - repository: org.apache.maven:maven-plugin-api:3.8.6
+  - repository: org.jsoup:jsoup:1.23.2
+  - repository: com.google.code.gson:gson:2.15.0
+  - repository: org.apache.maven:maven-plugin-api:3.10.0
   - repository: org.apache.maven:maven-project:3.0-alpha-2
-  - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.9.0
+  - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.16.0
     scope: provided
-  - repository: junit:junit:4.13.2
+  - repository: org.junit.jupiter:junit-jupiter:6.1.3
     scope: test
 
 build
