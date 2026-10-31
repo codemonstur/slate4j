@@ -36,8 +36,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <maven.compiler.release>19</maven.compiler.release>
-        <maven.version>3.6.3</maven.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.version>[3.6.3,)</maven.version>
 
         <version.library.bobthebuildtool>12</version.library.bobthebuildtool>
         <version.library.flexmark>0.64.8</version.library.flexmark>
@@ -47,21 +47,24 @@
         <version.library.maven>3.10.0</version.library.maven>
         <version.library.maven-annotations>3.16.0</version.library.maven-annotations>
 
-        <version.plugin.check-cves>1.1.0</version.plugin.check-cves>
-        <version.plugin.check-license>1.4.0</version.plugin.check-license>
+        <version.plugin.check-cves>1.2.0</version.plugin.check-cves>
+        <version.plugin.check-license>1.5.0</version.plugin.check-license>
         <version.plugin.codegrade>0.2.0</version.plugin.codegrade>
         <version.plugin.enforcer>3.6.3</version.plugin.enforcer>
         <version.plugin.gpg>3.2.8</version.plugin.gpg>
         <version.plugin.htmlcompiler>5.8.0</version.plugin.htmlcompiler>
         <version.plugin.javadoc>3.12.0</version.plugin.javadoc>
-        <version.plugin.plugin>3.9.0</version.plugin.plugin>
+        <version.plugin.plugin>3.13.1</version.plugin.plugin>
         <version.plugin.publish>0.12.0</version.plugin.publish>
         <version.plugin.shade>3.6.2</version.plugin.shade>
         <version.plugin.source>3.4.0</version.plugin.source>
         <version.plugin.surefire>3.6.0</version.plugin.surefire>
             <version.library.pitest-junit5>1.2.3</version.library.pitest-junit5>
         <version.plugin.pitest>1.30.1</version.plugin.pitest>
-</properties>
+        <!-- default for @{argLine}; jacoco's prepare-agent appends the agent when it runs -->
+        <argLine></argLine>
+            <version.plugin.jacoco>0.8.15</version.plugin.jacoco>
+    </properties>
 
     <dependencies>
 
@@ -122,6 +125,23 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${version.plugin.jacoco}</version>
+                <executions>
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals><goal>prepare-agent</goal></goals>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals><goal>report</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -158,6 +178,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${version.plugin.surefire}</version>
+                            <configuration>
+                    <argLine>@{argLine} -Xshare:off</argLine>
+                </configuration>
             </plugin>
 
             <plugin>
