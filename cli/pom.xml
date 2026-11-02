@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.github.codemonstur</groupId>
             <artifactId>jcli</artifactId>
-            <version>2.0.0</version>
+            <version>${version.library.jcli}</version>
         </dependency>
     </dependencies>
 
@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>${version.plugin.jar}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -41,3 +41,4 @@
     </build>
 
 </project>
+

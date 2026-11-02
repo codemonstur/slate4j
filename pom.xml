@@ -48,12 +48,15 @@
         <version.library.flexmark>0.64.8</version.library.flexmark>
         <version.library.jsoup>1.23.2</version.library.jsoup>
         <version.library.gson>2.15.0</version.library.gson>
+        <version.library.jcli>2.0.0</version.library.jcli>
+        <version.library.bobthebuildtool>12</version.library.bobthebuildtool>
         <version.library.junit>6.1.3</version.library.junit>
 
         <version.plugin.compiler>3.16.0</version.plugin.compiler>
         <version.plugin.surefire>3.6.0</version.plugin.surefire>
         <version.plugin.jacoco>0.8.15</version.plugin.jacoco>
         <version.plugin.htmlcompiler>5.8.0</version.plugin.htmlcompiler>
+        <version.plugin.jar>3.5.1</version.plugin.jar>
         <argLine></argLine>
     </properties>
 
@@ -99,3 +102,4 @@
     </build>
 
 </project>
+
