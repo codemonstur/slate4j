@@ -37,7 +37,7 @@
     <modules>
         <module>core</module>
         <module>bobplugin</module>
-        <module>maven-plugin</module>
+        <module>cli</module>
     </modules>
 
     <properties>
