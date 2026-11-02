@@ -1,4 +1,0 @@
-3
-
-Bump junit from 4.12 to 4.13.1
-Disabled preview features

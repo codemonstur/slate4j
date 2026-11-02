@@ -1,38 +1,9 @@
-include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-app-github
+include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-lib-github-maven
 
 vendor: com.github.codemonstur
 version: 4
-enablePreview: false
 packaging: maven-plugin
+enablePreview: false
 dependencies:
-  - repository: com.vladsch.flexmark:flexmark-all:0.64.8
-  - repository: org.jsoup:jsoup:1.23.2
-  - repository: com.google.code.gson:gson:2.15.0
-  - repository: org.apache.maven:maven-plugin-api:3.10.0
-  - repository: org.apache.maven:maven-project:3.0-alpha-2
-  - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.16.0
-    scope: provided
   - repository: org.junit.jupiter:junit-jupiter:6.1.3
     scope: test
-
-build
- |  mvn clean package -DskipTests
-
--- Deploys to Github; the bobplugin jar is what the bob `plugin` directive downloads.
--- The maven plugin artifact itself goes to MavenCentral through `mvn deploy`.
-deploy
-    EXISTS_RELEASE_NOTES = `ls src/docs/releases/release-${PROJECT_VERSION}.txt 2>/dev/null | wc -l`
-    if (${EXISTS_RELEASE_NOTES} != 1)
-        run-task release-notes
-        error Release notes need to be prepared first
-        fail
-    endif
-    info [${PROJECT_NAME}] Clean and build for deploy
-    run-task -i clean
-    run-task build
-    info [${PROJECT_NAME}] Tagging and pushing to github
-    git tag ${PROJECT_NAME}-${PROJECT_VERSION}
-    git push && git push --tags
-    info [${PROJECT_NAME}] Creating github release
-    hub release create -a target/${PROJECT_NAME}-${PROJECT_VERSION}-bobplugin.jar -F src/docs/releases/release-${PROJECT_VERSION}.txt ${PROJECT_NAME}-${PROJECT_VERSION}
-    version increment major
