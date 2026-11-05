@@ -20,6 +20,8 @@ clean: ## Delete everything in ./target
 	@$(INFO) "Cleaning"
 	@mvn clean
 
+# FIXME (2026-11-05): htmlcompiler will be fixed to handle the compile (Vaadin→jsass)
+# later. The build is off until then.
 build: ## Runs a mvn clean package
 	@mvn -DskipTests clean package
 
