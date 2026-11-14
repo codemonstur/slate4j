@@ -6,12 +6,35 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code SlateHeader} class.
+ */
 public final class SlateHeader {
+    /**
+     * The {@code title} field.
+     */
     public final String title;
+    /**
+     * The {@code languages} field.
+     */
     public final List<String> languages;
+    /**
+     * The {@code tocFooters} field.
+     */
     public final List<String> tocFooters;
+    /**
+     * The {@code includes} field.
+     */
     public final List<String> includes;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param title the title
+     * @param languages the languages
+     * @param tocFooters the toc footers
+     * @param includes the includes
+     */
     public SlateHeader(final String title, final List<String> languages, final List<String> tocFooters,
                        final List<String> includes) {
         this.title = title;
@@ -26,6 +49,13 @@ public final class SlateHeader {
         footers_marker = "toc_footers:",
         includes_marker = "includes:";
 
+    /**
+     * Returns the result of {@code toSlateHeader}.
+     *
+     * @param input the input
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public static SlateHeader toSlateHeader(final String input) throws IOException {
         try (final BufferedReader reader = new BufferedReader(new StringReader(input))) {
             String title = "";

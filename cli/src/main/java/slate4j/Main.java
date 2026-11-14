@@ -11,8 +11,17 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static jcli.CliParserBuilder.newCliParser;
 
+/**
+ * The {@code Main} enum.
+ */
 public enum Main {;
 
+    /**
+     * Runs the application.
+     *
+     * @param args the command-line arguments
+     * @throws Exception if the operation fails
+     */
     public static void main(final String... args) throws Exception {
         final CliDocs arguments = newCliParser(CliDocs::new)
                 .onErrorPrintHelpAndExit()

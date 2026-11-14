@@ -8,9 +8,21 @@ import java.nio.file.Files;
 
 import static slate4j.model.SlateHeader.toSlateHeader;
 
+/**
+ * The {@code SlateFile} class.
+ */
 public final class SlateFile {
+    /**
+     * The {@code file} field.
+     */
     public final File file;
+    /**
+     * The {@code header} field.
+     */
     public final SlateHeader header;
+    /**
+     * The {@code content} field.
+     */
     public final String content;
 
     private SlateFile(final File file, final SlateHeader header, final String content) {
@@ -20,6 +32,13 @@ public final class SlateFile {
     }
 
     private static final String slate_content_separator = "---";
+    /**
+     * Returns the result of {@code toSlateFile}.
+     *
+     * @param file the file
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public static SlateFile toSlateFile(final File file) throws IOException {
         try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
             if (!slate_content_separator.equals(reader.readLine()))

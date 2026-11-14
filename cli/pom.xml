@@ -10,7 +10,6 @@
     <artifactId>slate4j-cli</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The CLI for slate4j.</description>
-
     <dependencies>
         <dependency>
             <groupId>com.github.codemonstur</groupId>

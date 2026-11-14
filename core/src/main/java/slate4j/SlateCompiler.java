@@ -25,8 +25,19 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static slate4j.IO.*;
 import static slate4j.model.SlateFile.toSlateFile;
 
+/**
+ * The {@code SlateCompiler} class.
+ */
 public final class SlateCompiler {
 
+    /**
+     * Returns the result of {@code compileSlateDocument}.
+     *
+     * @param indexFile the index file
+     * @param logoFile the logo file
+     * @return the result
+     * @throws IOException if the operation fails
+     */
     public static String compileSlateDocument(final File indexFile, final File logoFile) throws IOException {
         final Gson gson = new Gson();
         final SlateFile slateFile = toSlateFile(indexFile);
@@ -152,6 +163,12 @@ public final class SlateCompiler {
         return toc;
     }
 
+    /**
+     * Returns the result of {@code markdownToHtml}.
+     *
+     * @param markdown the markdown
+     * @return the result
+     */
     public static String markdownToHtml(final String markdown) {
         final MutableDataSet options = new MutableDataSet();
         options.set(Parser.EXTENSIONS, List.of(TablesExtension.create()));
@@ -160,4 +177,10 @@ public final class SlateCompiler {
         return renderer.render(parser.parse(markdown));
     }
 
+
+    /**
+     * Creates a new instance.
+     */
+    public SlateCompiler() {
+    }
 }

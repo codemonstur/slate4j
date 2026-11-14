@@ -10,7 +10,6 @@
     <artifactId>slate4j-bobplugin</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The bob plugin for slate4j.</description>
-
     <dependencies>
         <dependency>
             <groupId>com.github.codemonstur</groupId>

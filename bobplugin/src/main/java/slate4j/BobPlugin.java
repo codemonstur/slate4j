@@ -16,8 +16,17 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static jcli.CliParserBuilder.newCliParser;
 
+/**
+ * The {@code BobPlugin} enum.
+ */
 public enum BobPlugin {;
 
+    /**
+     * Performs the {@code installPlugin} operation.
+     *
+     * @param project the project
+     * @throws VersionTooOld if the operation fails
+     */
     public static void installPlugin(final Project project) throws VersionTooOld {
         requireBobVersion("7");
         project.addCommand("slate4j", "Generates documentation in slatedocs format", BobPlugin::generateSlateDocs);

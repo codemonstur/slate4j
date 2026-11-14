@@ -10,7 +10,6 @@
     <artifactId>slate4j-core</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Core logic of slate4j.</description>
-
     <dependencies>
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
