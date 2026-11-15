@@ -57,7 +57,7 @@
         <version.plugin.check-cves>1.2.0</version.plugin.check-cves>
         <version.plugin.check-license>1.5.0</version.plugin.check-license>
         <version.plugin.codegrade>0.2.0</version.plugin.codegrade>
-        <version.plugin.htmlcompiler>5.8.0</version.plugin.htmlcompiler>
+        <version.plugin.htmlcompiler>5.9.0</version.plugin.htmlcompiler>
         <version.plugin.jar>3.5.1</version.plugin.jar>
         <argLine></argLine>
     </properties>

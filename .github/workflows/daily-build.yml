@@ -1,5 +1,3 @@
-# FIXME (2026-11-05): htmlcompiler will be fixed to handle the compile (Vaadin→jsass)
-# later. The build is off until then.
 name: Daily build
 
 on:
@@ -9,7 +7,6 @@ on:
 
 jobs:
   build:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
